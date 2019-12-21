@@ -1,26 +1,37 @@
 package com.example.newsapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends Animation {
+
+    private Context context;
+    private ProgressBar progressBar;
+    private TextView textView;
+    private float from;
+    private float to;
+
+    public SplashScreenActivity(Context context, ProgressBar progressBar, TextView textView, float from, float to) {
+        this.context = context;
+        this.progressBar = progressBar;
+        this.textView = textView;
+        this.from = from;
+        this.to = to;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
+    protected void applyTransformation(float interpolatedTime, Transformation t) {
+        super.applyTransformation(interpolatedTime,t);
+        float value = from + (to - from) * interpolatedTime;
+        progressBar.setProgress((int)value);
+        textView.setText((int)value + " %");
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }, 5000);
+        if (value == to) {
+            context.startActivity(new Intent(context, MainActivity.class));
+        }
     }
 }
