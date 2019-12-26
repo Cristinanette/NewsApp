@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject(result);
             JSONArray array = new JSONArray(jsonObject.getString("articles"));
 
-            Log.d("GETARTICLES", "JE SUIS LA !");
-
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = new JSONObject(array.getString(i));
                 String source = obj.getString("source");
